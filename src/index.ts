@@ -131,7 +131,7 @@ function objectToTree(obj: any, level:string[]=[]): string{
 /**
  * Converts the object/array to the string with tree structure
  */
-export function asTree(obj:any=undefined): string{
+export default function asTree(obj:any=undefined): string{
     // remove last \n character from the result
     let ret:string=objectToTree(obj);
     if(ret.length>0 && ret[ret.length-1]=='\n'){

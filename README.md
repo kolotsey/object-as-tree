@@ -25,7 +25,7 @@ You can install the objectToTree package via npm:
 ## Usage
 
 ```
-const { asTree } = require('object-as-tree');
+import asTree from 'object-as-tree';
 
 const myObject= {
     a: 1,
