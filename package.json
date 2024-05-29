@@ -1,0 +1,44 @@
+{
+  "name": "object-as-tree",
+  "version": "1.0.0",
+  "description": "Visualise a Javascript/Typescript object in a tree structure",
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kolotsey/object-as-tree.git"
+  },
+  "keywords": [
+    "Debug",
+    "Debugging",
+    "Javascript",
+    "JSON",
+    "Object",
+    "Tree",
+    "Tree Structure",
+    "Visualise",
+    "Visualize"
+  ],
+  "author": "Sergey Kolotsey",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kolotsey/object-as-tree/issues"
+  },
+  "homepage": "https://github.com/kolotsey/object-as-tree#readme",
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.4",
+    "ts-node": "^10.9.2",
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.5"
+  }
+}
