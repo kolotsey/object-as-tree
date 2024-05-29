@@ -152,3 +152,22 @@ test('prints object with nested object correctly', () => {
   ├─• city="New York"
   └─• zip=10001`);
 });
+
+test('prints Record correctly', () => {
+    const record:Record<string, string|number> = { name: 'John', age: 30 };
+    const result = asTree({ name: 'John', age: 30 });
+    expect(result).toBe(`\
+{}
+├─• name="John"
+└─• age=30`);
+});
+
+test('circular reference', () => {
+    const obj:any = { name: 'John' };
+    obj['self'] = obj;
+    const result = asTree(obj);
+    expect(result).toBe(`\
+{}
+├─• name="John"
+└─• self //Circular reference`);
+});

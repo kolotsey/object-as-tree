@@ -33,96 +33,107 @@ function isClass(obj:any): boolean {
  * @param level Array of strings to represent the level of the tree
  * @returns A string with the tree representation of the object
  */
-function objectToTree(obj: any, level:string[]=[]): string{
+function objectToTree(obj: any, level:string[]=[], visited:Set<any>=new Set<any>()): string{
+    if (obj && typeof obj ==='object'){
+        if( visited.has(obj)) {
+            return ' //Circular reference\n';
+        }
+        visited.add(obj);
+    }
+
+    let ret:string='';
+
     if(obj===null){
-        return 'null\n';
+        ret='null\n';
 
     }else if(obj instanceof Map){
         if( obj.size==0){
-            return '[0] //Map\n';
+            ret='[0] //Map\n';
         }else if(obj.size==1){
             let key:any=obj.keys().next().value;
-            return '[1] //Map\n'+
-                level.join('')+'└─• '+key+'='+objectToTree(obj.get( key), level.concat('  '));
+            ret='[1] //Map\n'+
+                level.join('')+'└─• '+key+'='+objectToTree(obj.get( key), level.concat('  '), visited);
         }else{
             let keys:any[]=Array.from(obj.keys());
-            return '['+obj.size+'] //Map\n'+
+            ret='['+obj.size+'] //Map\n'+
                 keys.slice(0, -1).map((key)=>{
-                    return level.join('')+'├─• '+key+'='+objectToTree(obj.get( key), level.concat('│ '));
+                    return level.join('')+'├─• '+key+'='+objectToTree(obj.get( key), level.concat('│ '), visited);
                 }).join('')+
-                level.join('')+'└─• '+keys[keys.length-1]+'='+objectToTree(obj.get( keys[keys.length-1]), level.concat('  '));
+                level.join('')+'└─• '+keys[keys.length-1]+'='+objectToTree(obj.get( keys[keys.length-1]), level.concat('  '), visited);
         }
     }else if(obj instanceof Set){
         if(obj.size==0){
-            return '[0] //Set\n';
+            ret= '[0] //Set\n';
         }else if(obj.size==1){
-            return '[1] //Set\n'+
-                level.join('')+'└─• '+objectToTree(obj.values().next().value, level.concat('  '));
+            ret= '[1] //Set\n'+
+                level.join('')+'└─• '+objectToTree(obj.values().next().value, level.concat('  '), visited);
         }else{
             let values:any[]=Array.from(obj.values());
-            return '['+obj.size+'] //Set\n'+
+            ret= '['+obj.size+'] //Set\n'+
                 values.slice(0, -1).map((value)=>{
-                    return level.join('')+'├─• '+objectToTree(value, level.concat('│ '));
+                    return level.join('')+'├─• '+objectToTree(value, level.concat('│ '), visited);
                 }).join('')+
-                level.join('')+'└─• '+objectToTree(values[values.length-1], level.concat('  '));
+                level.join('')+'└─• '+objectToTree(values[values.length-1], level.concat('  '), visited);
         }
 
     }else if(Array.isArray(obj)){
         if(obj.length==0){
-            return '[0]\n';
+            ret= '[0]\n';
         }else if(obj.length==1){
-            return '[1]\n'+
-                level.join('')+'└─• '+objectToTree(obj[0], level.concat('  '));
+            ret= '[1]\n'+
+                level.join('')+'└─• '+objectToTree(obj[0], level.concat('  '), visited);
         }else{
-            let ret:string='';
+            ret='['+obj.length+']\n';
             for(let i=0; i<obj.length-1; i++){
-                ret+=level.join('')+'├─• '+objectToTree(obj[i], level.concat('│ '));
+                ret+=level.join('')+'├─• '+objectToTree(obj[i], level.concat('│ '), visited);
             }
-            ret+=level.join('')+'└─• '+objectToTree(obj[obj.length-1], level.concat('  '));
-            return '['+obj.length+']\n'+ret;
+            ret+=level.join('')+'└─• '+objectToTree(obj[obj.length-1], level.concat('  '), visited);
         }
 
 
     }else if(typeof obj==='object' && !(obj instanceof Function)){
         if( obj instanceof Date){
-            return '{} //Date '+obj.toISOString()+'\n';
-        }
-
-        let keys:any[]=Object.keys(obj);
-
-        if(keys.length==0){
-            return '{}\n';
-
-        }else if(keys.length==1){
-            return '{}\n'+level.join('')+'└─• '+keys[0]+(isStructure(obj[keys[0]])? '' : '=')+objectToTree(obj[keys[0]], level.concat('  '));
-
+            ret= '{} //Date '+obj.toISOString()+'\n';
         }else{
-            return '{}\n'+
-                    keys.slice(0, -1).map((key)=>{
-                        return level.join('')+'├─• '+key+(isStructure(obj[key])? '' : '=')+objectToTree(obj[key], level.concat('│ '));
-                    }).join('')+
-                    level.join('')+'└─• '+keys[keys.length-1]+(isStructure(obj[keys[keys.length-1]])? '' : '=')+objectToTree(obj[keys[keys.length-1]], level.concat('  '));
+
+            let keys:any[]=Object.keys(obj);
+
+            if(keys.length==0){
+                ret= '{}\n';
+
+            }else if(keys.length==1){
+                ret= '{}\n'+level.join('')+'└─• '+keys[0]+(isStructure(obj[keys[0]])? '' : '=')+objectToTree(obj[keys[0]], level.concat('  '), visited);
+
+            }else{
+                ret= '{}\n'+
+                        keys.slice(0, -1).map((key)=>{
+                            return level.join('')+'├─• '+key+(isStructure(obj[key])? '' : '=')+objectToTree(obj[key], level.concat('│ '), visited);
+                        }).join('')+
+                        level.join('')+'└─• '+keys[keys.length-1]+(isStructure(obj[keys[keys.length-1]])? '' : '=')+objectToTree(obj[keys[keys.length-1]], level.concat('  '), visited);
+            }
         }
-    
 
     
 
     }else if (obj instanceof Function){
         // obj is a function or a class
         if( isClass(obj)){
-            return '{} //class '+obj.name+'\n';
+            ret= '{} //class '+obj.name+'\n';
         }else{
-            return '{} //function '+obj.name+'()\n';
+            ret= '{} //function '+obj.name+'()\n';
         }
     
     }else if (typeof obj==='string'){
         // Substitute all \n characters with the string '\n'
-        return '"'+obj.replace(/\n/g, '\\n').replace(/\r/g, '\\r').replace(/"/g, '\\"')+'"\n';
-        // return '"'+obj+'"\n';
+        ret= '"'+obj.replace(/\n/g, '\\n').replace(/\r/g, '\\r').replace(/"/g, '\\"')+'"\n';
 
     }else{
-        return obj+'\n';
+        ret= obj+'\n';
     }
+
+    visited.delete(obj);
+
+    return ret;
 }
 
 

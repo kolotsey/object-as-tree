@@ -22,9 +22,13 @@ You can install the objectToTree package via npm:
 
 - Provides a clear tree representation for easy debugging.
 
+- Detects circular references.
+
+- No dependencies.
+
 ## Usage
 
-```
+```js
 import asTree from 'object-as-tree';
 
 const myObject= {

@@ -1,6 +1,6 @@
 {
   "name": "object-as-tree",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Visualise a Javascript/Typescript object in a tree structure",
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
