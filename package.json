@@ -18,14 +18,13 @@
   },
   "keywords": [
     "Debug",
-    "Debugging",
-    "Javascript",
+    "Hierarchy",
     "JSON",
     "Object",
+    "Print",
+    "Structure",
     "Tree",
-    "Tree Structure",
-    "Visualise",
-    "Visualize"
+    "Visualise"
   ],
   "author": "Sergey Kolotsey",
   "license": "MIT",

@@ -12,13 +12,17 @@ A lightweight utility for visualizing JavaScript/TypeScript objects in a tree st
 
 ## Installation
 
-You can install the objectToTree package via npm:
+You can install the object-as-tree package via npm:
 
-```npm install object-as-tree```
+```
+npm install object-as-tree
+```
 
 ## Features
 
 - Handles objects, arrays, maps, sets, and other data structures.
+
+- Provides info on RegExp, Date, and other special objects.
 
 - Provides a clear tree representation for easy debugging.
 
@@ -38,7 +42,8 @@ const myObject= {
         d: true,
         e: null
     },
-    f:[1,2,3]
+    f:new Date('2021-01-01'),
+    g:[1,2,3],
 };
 
 console.log(asTree(myObject));
@@ -53,7 +58,8 @@ Will produce a tree representation of the object:
 ├─• c{}
 │ ├─• d=true
 │ └─• e=null
-└─• f[3]
+├─• f{} // Date 2021-01-01T00:00:00.000Z
+└─• g[3]
   ├─• 1
   ├─• 2
   └─• 3
