@@ -23,7 +23,7 @@ test('prints number correctly', () => {
 
 test('prints Number correctly', () => {
     const result = asTree(new Number(123));
-    expect(result).toBe('123 //Number object');
+    expect(result).toBe('Number(123)');
 });
 
 test('prints NaN correctly', () => {
@@ -63,7 +63,7 @@ test('prints string with quotes correctly', () => {
 
 test('prints String correctly', () => {
     const result = asTree(new String('Hello, World!'));
-    expect(result).toBe('"Hello, World!" //String object');
+    expect(result).toBe('String("Hello, World!")');
 });
 
 test('prints boolean correctly', () => {
@@ -73,7 +73,7 @@ test('prints boolean correctly', () => {
 
 test('prints Boolean correctly', () => {
     const result = asTree(new Boolean(true));
-    expect(result).toBe('true //Boolean object');
+    expect(result).toBe('Boolean(true)');
 });
 
 test('prints object in object correctly', () => {
@@ -84,25 +84,25 @@ test('prints object in object correctly', () => {
         birthday: new Date('2021-01-01'),
     });
     expect(result).toBe(`\
-{}
-├─• name="John" //String object
-├─• age=30 //Number object
-├─• married=true //Boolean object
-└─• birthday{} //Date 2021-01-01T00:00:00.000Z`);
+Object{}
+├─• name: String("John")
+├─• age: Number(30)
+├─• married: Boolean(true)
+└─• birthday: Date("2021-01-01T00:00:00.000Z")`);
 });
 
 test('prints empty array correctly', () => {
     const result = asTree([]);
-    expect(result).toBe('[0]');
+    expect(result).toBe('Array(0)');
 });
 
 test('prints array correctly', () => {
     const result = asTree([1, 2, 3]);
     expect(result).toBe(`\
-[3]
-├─• 1
-├─• 2
-└─• 3`);
+Array(3)
+├─• 0: 1
+├─• 1: 2
+└─• 2: 3`);
 });
 
 test('prints map correctly', () => {
@@ -111,9 +111,9 @@ test('prints map correctly', () => {
     map.set('age', 30);
     const result = asTree(map);
     expect(result).toBe(`\
-[2] //Map
-├─• name="John"
-└─• age=30`);
+Map(2)
+├─• name: "John"
+└─• age: 30`);
 });
 
 test('prints map with nested map correctly', () => {
@@ -125,11 +125,11 @@ test('prints map with nested map correctly', () => {
     map.set('address', addressMap);
     const result = asTree(map);
     expect(result).toBe(`\
-[2] //Map
-├─• name="John"
-└─• address[2] //Map
-  ├─• city="New York"
-  └─• zip=10001`);
+Map(2)
+├─• name: "John"
+└─• address: Map(2)
+  ├─• city: "New York"
+  └─• zip: 10001`);
 });
 
 test('prints map with non-string keys correctly', () => {
@@ -138,64 +138,64 @@ test('prints map with non-string keys correctly', () => {
     map.set({a:'a', b:'b'}, 30);
     const result = asTree(map);
     expect(result).toBe(`\
-[2] //Map
-├─• 1,2="John"
-└─• [object Object]=30`);
+Map(2)
+├─• 1,2: "John"
+└─• [object Object]: 30`);
 });
 
 test('prints set correctly', () => {
     const set = new Set([1, 2, 3]);
     const result = asTree(set);
     expect(result).toBe(`\
-[3] //Set
-├─• 1
-├─• 2
-└─• 3`);
+Set(3)
+├─• 0: 1
+├─• 1: 2
+└─• 2: 3`);
 });
 
 test('prints empty object correctly', () => {
     const result = asTree({});
-    expect(result).toBe('{}');
+    expect(result).toBe('Object{}');
 });
 
 test('prints object correctly', () => {
     const result = asTree({ name: 'John', age: 30 });
     expect(result).toBe(`\
-{}
-├─• name="John"
-└─• age=30`);
+Object{}
+├─• name: "John"
+└─• age: 30`);
 });
 
 test('prints date correctly', () => {
     const result = asTree(new Date('2021-01-01'));
-    expect(result).toBe('{} //Date 2021-01-01T00:00:00.000Z');
+    expect(result).toBe('Date("2021-01-01T00:00:00.000Z")');
 });
 
 test('prints regexp correctly', () => {
     const result = asTree(/test/);
-    expect(result).toBe('{} //RegExp /test/');
+    expect(result).toBe('RegExp(/test/)');
 });
 
 test('prints error correctly', () => {
     const result = asTree(new Error('Error message'));
-    expect(result).toBe('{} //Error "Error message"');
+    expect(result).toBe('Error("Error message")');
 });
 
 test('prints function correctly', () => {
     const result = asTree(function test() {});
-    expect(result).toBe('{} //function test()');
+    expect(result).toBe('f test()');
 });
 
 test('prints class correctly', () => {
     class Test {}
     const result = asTree(Test);
-    expect(result).toBe('{} //class Test');
+    expect(result).toBe('Class Test');
 });
 
 test('prints class instance correctly', () => {
     class Test {}
     const result = asTree(new Test());
-    expect(result).toBe('{}');
+    expect(result).toBe('Object{}');
 });
 
 test('prints class instance with properties correctly', () => {
@@ -205,28 +205,43 @@ test('prints class instance with properties correctly', () => {
     }
     const result = asTree(new Test());
     expect(result).toBe(`\
-{}
-├─• name="John"
-└─• age=30`);
+Object{}
+├─• name: "John"
+└─• age: 30`);
 });
 
 test('prints object with nested object correctly', () => {
     const result = asTree({ name: 'John', address: { city: 'New York', zip: 10001 } });
     expect(result).toBe(`\
-{}
-├─• name="John"
-└─• address{}
-  ├─• city="New York"
-  └─• zip=10001`);
+Object{}
+├─• name: "John"
+└─• address: Object{}
+  ├─• city: "New York"
+  └─• zip: 10001`);
+});
+
+test('prints object with undefined correctly', () => {
+    const result = asTree({ name: 'John', age: undefined });
+    expect(result).toBe(`\
+Object{}
+├─• name: "John"
+└─• age: undefined`);
+});
+
+test('prints object with null correctly', () => {
+    const result = asTree({ name: 'John', age: null });
+    expect(result).toBe(`\
+Object{}
+├─• name: "John"
+└─• age: null`);
 });
 
 test('prints Record correctly', () => {
-    const record:Record<string, string|number> = { name: 'John', age: 30 };
     const result = asTree({ name: 'John', age: 30 });
     expect(result).toBe(`\
-{}
-├─• name="John"
-└─• age=30`);
+Object{}
+├─• name: "John"
+└─• age: 30`);
 });
 
 test('detects circular reference', () => {
@@ -234,9 +249,9 @@ test('detects circular reference', () => {
     obj['self'] = obj;
     const result = asTree(obj);
     expect(result).toBe(`\
-{}
-├─• name="John"
-└─• self{} //Circular reference`);
+Object{}
+├─• name: "John"
+└─• self: Object{} // Circular reference`);
 });
 
 test('detects circular reference in array', () => {
@@ -244,20 +259,20 @@ test('detects circular reference in array', () => {
     obj.push(obj);
     const result = asTree(obj);
     expect(result).toBe(`\
-[4]
-├─• 1
-├─• 2
-├─• 3
-└─• [] //Circular reference`);
+Array(4)
+├─• 0: 1
+├─• 1: 2
+├─• 2: 3
+└─• 3: Array(4) // Circular reference`);
 });
 
 test('handles same object without circular reference', () => {
     const obj:any = { name: 'John' };
     const result = asTree([obj, obj]);
     expect(result).toBe(`\
-[2]
-├─• {}
-│ └─• name="John"
-└─• {}
-  └─• name="John"`);
+Array(2)
+├─• 0: Object{}
+│ └─• name: "John"
+└─• 1: Object{}
+  └─• name: "John"`);
 });

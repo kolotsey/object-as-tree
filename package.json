@@ -1,6 +1,6 @@
 {
   "name": "object-as-tree",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Visualise a Javascript/Typescript object in a tree structure",
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "build": "tsup",
-    "test": "jest"
+    "test": "NO_COLOR=true jest"
   },
   "repository": {
     "type": "git",
