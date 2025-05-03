@@ -1,4 +1,4 @@
-import { dim, red, green, blue, bold, magenta } from "./color-output";
+import { dim, red, green, blue, bold, magenta, yellow } from "./color-output";
 
 /**
  * Returns true if the object is a class
@@ -36,7 +36,7 @@ function objType(s: string) {
 }
 
 function nullObj() {
-    return red('null');
+    return bold('null');
 }
 
 function undefinedObj() {
@@ -44,27 +44,27 @@ function undefinedObj() {
 }
 
 function string(s: string) {
-    return green('"' + s.replace(/\n/g, '\\n').replace(/\r/g, '\\r').replace(/"/g, '\\"') + '"');
+    return green('\'' + s.replace(/\n/g, '\\n').replace(/\r/g, '\\r').replace(/'/g, '\\\'') + '\'');
 }
 
 function number(s: number) {
-    return blue(bold(s.toString()));
+    return yellow(s.toString());
 }
 
 function boolean(s: boolean) {
-    return blue(bold(s.toString()));
+    return yellow(s.toString());
 }
 
 function dateObj(s: Date) {
-    return objType('Date(') + string(s.toISOString()) + objType(')');
+    return objType('Date(') + magenta(s.toISOString()) + objType(')');
 }
 
 function regexpObj(s: RegExp) {
-    return objType('RegExp(') + magenta(s.toString()) + objType(')');
+    return objType('RegExp(') + red(s.toString()) + objType(')');
 }
 
 function errorObj(s: Error) {
-    return objType('Error(') + string(s.message) + objType(')');
+    return objType('Error(') + s.message + objType(')');
 }
 
 function functionObj(s: Function) {
