@@ -188,7 +188,7 @@ function objectToTree(obj: any, level: string[] = [], visited: Set<any> = new Se
 /**
  * Converts the object/array to the string with tree structure
  */
-export default function asTree(obj: any = undefined): string {
+export function asTree(obj: any = undefined): string {
     // remove last \n character from the result
     let ret: string = objectToTree(obj);
     if (ret.length > 0 && ret[ret.length - 1] == '\n') {

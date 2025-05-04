@@ -1,6 +1,6 @@
 # Object as Tree
 
-A lightweight utility for visualizing JavaScript/TypeScript objects in a tree structure.
+A lightweight utility for visualizing JavaScript/TypeScript objects in a tree structure in the console.
 
 ## Table of Contents
 
@@ -12,28 +12,27 @@ A lightweight utility for visualizing JavaScript/TypeScript objects in a tree st
 
 ## Installation
 
-You can install the object-as-tree package via npm:
-
+Install the package as a dev dependency using npm:
 ```
-npm install object-as-tree
+npm install --save-dev object-as-tree
 ```
 
 ## Features
 
-- Handles objects, arrays, maps, sets, and other data structures.
+- Supports objects, arrays, maps, sets, and other common data structures.
 
-- Provides info on RegExp, Date, and other special objects.
+- Displays info for RegExp, Date, and other special objects.
 
 - Provides a clear tree representation for easy debugging.
 
 - Detects circular references.
 
-- No dependencies.
+- Zero dependencies.
 
 ## Usage
 
 ```js
-import asTree from 'object-as-tree';
+import { asTree } from 'object-as-tree';
 
 const myObject= {
     a: 1,
@@ -49,25 +48,25 @@ const myObject= {
 console.log(asTree(myObject));
 ```
 
-Will produce a tree representation of the object:
+This will output a tree representation of the object:
 
 ```
-{}
-├─• a=1
-├─• b="Hello World!"
-├─• c{}
-│ ├─• d=true
-│ └─• e=null
-├─• f{} // Date 2021-01-01T00:00:00.000Z
-└─• g[3]
-  ├─• 1
-  ├─• 2
-  └─• 3
+Object{}
+├─• a: 1
+├─• b: 'Hello World!'
+├─• c: Object{}
+│ ├─• d: true
+│ └─• e: null
+├─• f: Date(2021-01-01T00:00:00.000Z)
+└─• g: Array(3)
+  ├─• 0: 1
+  ├─• 1: 2
+  └─• 2: 3
 ```
 
 ## Contributing
 
-Contributions are welcome.
+Contributions are welcome. Open an issue or submit a pull request.
 
 ## License
 

@@ -1,5 +1,5 @@
 import { test, expect } from 'vitest';
-import asTree from '../src';
+import { asTree } from '../src';
 
 
 test('prints empty input correctly', () => {
